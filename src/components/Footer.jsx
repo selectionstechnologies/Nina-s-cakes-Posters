@@ -1,59 +1,53 @@
 import { Link } from 'react-router-dom'
-import { LuChefHat, LuMapPin, LuPhone } from 'react-icons/lu'
-import { business } from '../data.js'
+import { LuPhone } from 'react-icons/lu'
+import { FaWhatsapp } from 'react-icons/fa6'
+import Logo from './Logo.jsx'
+import { business, waLink } from '../data.js'
+
+const pages = [
+  { to: '/', label: 'Home' },
+  { to: '/menu', label: 'Menu' },
+  { to: '/about', label: 'About' },
+  { to: '/contact', label: 'Order a Cake' },
+]
 
 export default function Footer() {
   return (
-    <footer className="bg-mocha-dark text-stone-300">
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4">
+    <footer className="bg-cocoa text-white/75">
+      <div className="container-x grid gap-12 py-16 md:grid-cols-3">
         <div>
-          <h3 className="flex items-center gap-2 font-serif text-2xl font-bold text-white">
-            <LuChefHat aria-hidden className="h-7 w-7" /> {business.name}
-          </h3>
-          <p className="mt-3 text-sm">{business.tagline}</p>
+          <Logo light />
+          <p className="mt-5 max-w-xs text-sm leading-relaxed">
+            {business.tagline}. Every order is baked fresh and finished by hand.
+          </p>
         </div>
         <div>
-          <h4 className="mb-3 font-semibold text-white">Quick Links</h4>
-          <ul className="space-y-2 text-sm">
-            {['Home', 'Menu', 'About', 'Contact'].map((p) => (
-              <li key={p}>
-                <Link to={p === 'Home' ? '/' : `/${p.toLowerCase()}`} className="hover:text-blush">{p}</Link>
-              </li>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white">Explore</h4>
+          <ul className="mt-5 space-y-3 text-sm">
+            {pages.map((p) => (
+              <li key={p.to}><Link to={p.to} className="hover:text-white">{p.label}</Link></li>
             ))}
           </ul>
         </div>
         <div>
-          <h4 className="mb-3 font-semibold text-white">Order</h4>
-          <p className="text-sm">{business.services}</p>
-          <a href={`tel:${business.phone}`} className="mt-2 flex items-center gap-2 text-sm hover:text-blush">
-            <LuPhone className="h-4 w-4" /> {business.phone}
-          </a>
-          <div className="mt-4 flex gap-3">
-            {business.socialLinks.map(({ label, url, Icon }) => (
-              <a key={label} href={url} target="_blank" rel="noreferrer" aria-label={label}
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 hover:bg-blush hover:text-mocha-dark">
-                <Icon className="h-4 w-4" />
+          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white">Get in Touch</h4>
+          <ul className="mt-5 space-y-3 text-sm">
+            <li>
+              <a href={waLink()} target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 hover:text-white">
+                <FaWhatsapp className="h-4 w-4 text-whatsapp" /> WhatsApp {business.phone}
               </a>
-            ))}
-          </div>
-        </div>
-        <div>
-          <h4 className="mb-3 font-semibold text-white">Find Us</h4>
-          <iframe
-            title={`${business.name} on Google Maps`}
-            src={business.mapEmbed}
-            className="h-44 w-full rounded-lg border-0"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            allowFullScreen
-          />
-          <a href={business.mapLink} target="_blank" rel="noreferrer" className="mt-3 flex items-center gap-2 text-sm hover:text-blush">
-            <LuMapPin className="h-4 w-4" /> Get Directions
-          </a>
+            </li>
+            <li>
+              <a href={`tel:${business.phone}`} className="inline-flex items-center gap-3 hover:text-white">
+                <LuPhone className="h-4 w-4" /> Call {business.phone}
+              </a>
+            </li>
+          </ul>
+          <p className="mt-5 text-xs leading-relaxed text-white/55">All orders are made to order. Please let us know about any allergies when ordering.</p>
         </div>
       </div>
-      <div className="border-t border-white/10 py-4 text-center text-xs">
-        © {new Date().getFullYear()} {business.name}. All rights reserved.
+      <div className="border-t border-white/10">
+        <p className="container-x py-5 text-xs text-white/55">© {new Date().getFullYear()} {business.name}. All rights reserved.</p>
       </div>
     </footer>
   )

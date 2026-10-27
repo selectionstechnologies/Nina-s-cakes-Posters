@@ -1,9 +1,26 @@
 import { useState } from 'react'
-import { LuPhone } from 'react-icons/lu'
+import { LuChevronDown, LuPhone } from 'react-icons/lu'
+import { FaWhatsapp } from 'react-icons/fa6'
 import PageHeader from '../components/PageHeader.jsx'
-import { business } from '../data.js'
+import { business, images, menu, waLink } from '../data.js'
 
-const empty = { name: '', email: '', phone: '', date: '', guests: '2', message: '' }
+const LEAD_DAYS = 3
+const minDate = () => {
+  const d = new Date()
+  d.setDate(d.getDate() + LEAD_DAYS)
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+
+const occasions = ['Birthday', 'Wedding', 'Baby Shower', 'Anniversary', 'Graduation', 'Corporate Event', 'Other']
+const products = [...menu.flatMap((c) => c.items.map((i) => i.name)), 'Something else']
+const empty = { name: '', phone: '', occasion: '', product: '', size: '', flavour: '', date: '', fulfilment: 'Pickup', notes: '' }
+
+const faqs = [
+  { q: 'How far in advance should I order?', a: `Please order at least ${LEAD_DAYS} days ahead. For wedding and tiered cakes, contact us as early as possible to secure your date.` },
+  { q: 'Can you recreate a design from a photo?', a: 'Yes — send us your inspiration photo on WhatsApp and we will suggest the best size, flavours and price.' },
+  { q: 'Do you cater for allergies?', a: 'Please tell us about any allergies when ordering so we can advise on what is suitable for you.' },
+  { q: 'How do I confirm my order?', a: 'Once we agree on the details over WhatsApp, we will confirm the final price and your order date.' },
+]
 
 export default function Contact() {
   const [form, setForm] = useState(empty)
@@ -12,61 +29,130 @@ export default function Contact() {
   const update = (e) => setForm({ ...form, [e.target.name]: e.target.value })
   const submit = (e) => {
     e.preventDefault()
+    const lines = [
+      `Hi ${business.name}! I'd like to place an order.`,
+      '',
+      `Name: ${form.name}`,
+      `Phone: ${form.phone}`,
+      `Occasion: ${form.occasion}`,
+      `Cake / item: ${form.product}`,
+      form.size && `Size / servings: ${form.size}`,
+      form.flavour && `Flavour: ${form.flavour}`,
+      `Date needed: ${form.date}`,
+      `Pickup or delivery: ${form.fulfilment}`,
+      form.notes && `Design notes: ${form.notes}`,
+    ].filter((l) => l !== false && l !== '')
+    window.open(waLink(lines.join('\n')), '_blank', 'noopener')
     setSent(true)
-    setForm(empty)
   }
 
-  const input = 'w-full rounded-lg border border-stone-300 bg-white px-4 py-2.5 outline-none focus:border-mocha focus:ring-2 focus:ring-mocha/20'
+  const field = 'w-full rounded-lg border border-cocoa/15 bg-white px-4 py-3 text-sm outline-none transition focus:border-rose focus:ring-2 focus:ring-rose/20'
+  const label = 'mb-1.5 block text-xs font-semibold uppercase tracking-[0.12em] text-cocoa'
 
   return (
     <>
-      <PageHeader title="Contact & Orders" subtitle="Order by the dozen, book catering for your event, or just say hello." />
+      <PageHeader
+        eyebrow="Order a Cake"
+        title="Let's Bake Something Special"
+        subtitle="Fill in the order form and it opens straight in WhatsApp — or message us directly."
+        image={images.heroContact}
+      />
 
-      <section className="mx-auto grid max-w-6xl gap-12 px-4 py-16 lg:grid-cols-5">
-        <form onSubmit={submit} className="space-y-5 rounded-2xl bg-white p-8 shadow-sm ring-1 ring-stone-200 lg:col-span-3">
-          <h2 className="font-serif text-2xl font-bold text-mocha-dark">Send us a message</h2>
+      <section className="container-x grid gap-12 py-20 lg:grid-cols-5">
+        <form onSubmit={submit} className="rounded-xl bg-white p-6 ring-1 ring-cocoa/10 sm:p-10 lg:col-span-3">
+          <h2 className="text-3xl font-semibold md:text-4xl">Order request</h2>
+          <p className="mt-2 text-sm text-cocoa-light">Fields marked * are required. We'll reply on WhatsApp to confirm details and price.</p>
+
           {sent && (
-            <p className="rounded-lg bg-sage/20 px-4 py-3 text-sm font-medium text-stone-700">
-              Thank you! We've received your message and will get back to you shortly.
+            <p role="status" className="mt-6 rounded-lg bg-whatsapp/10 px-4 py-3 text-sm font-medium text-cocoa">
+              WhatsApp has opened with your order details — just press send. If it didn't open, message us at {business.phone}.
             </p>
           )}
-          <div className="grid gap-5 sm:grid-cols-2">
-            <input required name="name" value={form.name} onChange={update} placeholder="Your name *" className={input} />
-            <input required type="email" name="email" value={form.email} onChange={update} placeholder="Email address *" className={input} />
-            <input name="phone" value={form.phone} onChange={update} placeholder="Phone number" className={input} />
-            <input type="date" name="date" value={form.date} onChange={update} className={input} />
+
+          <div className="mt-8 grid gap-5 sm:grid-cols-2">
+            <div>
+              <label htmlFor="name" className={label}>Your name *</label>
+              <input id="name" required name="name" value={form.name} onChange={update} autoComplete="name" className={field} />
+            </div>
+            <div>
+              <label htmlFor="phone" className={label}>Phone *</label>
+              <input id="phone" required type="tel" name="phone" value={form.phone} onChange={update} autoComplete="tel" className={field} />
+            </div>
+            <div>
+              <label htmlFor="occasion" className={label}>Occasion *</label>
+              <select id="occasion" required name="occasion" value={form.occasion} onChange={update} className={field}>
+                <option value="" disabled>Select occasion</option>
+                {occasions.map((o) => <option key={o}>{o}</option>)}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="product" className={label}>Cake / item *</label>
+              <select id="product" required name="product" value={form.product} onChange={update} className={field}>
+                <option value="" disabled>Select an item</option>
+                {products.map((p) => <option key={p}>{p}</option>)}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="size" className={label}>Size / servings</label>
+              <input id="size" name="size" value={form.size} onChange={update} placeholder="e.g. 20 guests or 2 dozen" className={field} />
+            </div>
+            <div>
+              <label htmlFor="flavour" className={label}>Flavour</label>
+              <input id="flavour" name="flavour" value={form.flavour} onChange={update} placeholder="e.g. Vanilla with strawberry" className={field} />
+            </div>
+            <div>
+              <label htmlFor="date" className={label}>Date needed *</label>
+              <input id="date" required type="date" min={minDate()} name="date" value={form.date} onChange={update} className={field} />
+            </div>
+            <fieldset>
+              <legend className={label}>Pickup or delivery *</legend>
+              <div className="flex gap-3">
+                {['Pickup', 'Delivery'].map((f) => (
+                  <label key={f} className={`flex flex-1 cursor-pointer items-center justify-center rounded-lg border px-4 py-3 text-sm font-medium transition ${form.fulfilment === f ? 'border-rose bg-rose-soft/50 text-cocoa' : 'border-cocoa/15 text-cocoa-light'}`}>
+                    <input type="radio" name="fulfilment" value={f} checked={form.fulfilment === f} onChange={update} className="sr-only" />
+                    {f}
+                  </label>
+                ))}
+              </div>
+            </fieldset>
           </div>
-          <select name="guests" value={form.guests} onChange={update} className={input}>
-            {[1, 2, 3, 4, 5, 6, 8, 10].map((n) => <option key={n} value={n}>{n} dozen</option>)}
-          </select>
-          <textarea required name="message" rows="5" value={form.message} onChange={update} placeholder="Your message *" className={input} />
-          <button type="submit" className="w-full rounded-full bg-mocha py-3 font-semibold text-white hover:bg-mocha-dark">Send Message</button>
+          <div className="mt-5">
+            <label htmlFor="notes" className={label}>Design notes</label>
+            <textarea id="notes" name="notes" rows="4" value={form.notes} onChange={update} placeholder="Theme, colours, message on the cake, allergies…" className={field} />
+          </div>
+          <button type="submit" className="btn mt-8 w-full bg-whatsapp text-white hover:brightness-95">
+            <FaWhatsapp className="h-5 w-5" /> Send Order on WhatsApp
+          </button>
         </form>
 
-        <div className="space-y-6 lg:col-span-2">
-          <div className="rounded-2xl bg-white p-8 shadow-sm ring-1 ring-stone-200">
-            <h3 className="font-serif text-xl font-semibold text-mocha-dark">Call to Order</h3>
-            <a href={`tel:${business.phone}`} className="mt-4 flex items-center gap-3 text-2xl font-bold text-mocha hover:text-mocha-dark">
-              <LuPhone className="h-6 w-6" /> {business.phone}
+        <aside className="space-y-6 lg:col-span-2">
+          <div className="rounded-xl bg-cocoa p-8 text-white">
+            <p className="eyebrow !text-rose-soft">Quickest Way</p>
+            <h3 className="mt-3 text-3xl font-semibold">Chat on WhatsApp</h3>
+            <p className="mt-3 text-sm leading-relaxed text-white/75">Send photos of your dream cake and get a quick reply from the baker.</p>
+            <a href={waLink()} target="_blank" rel="noreferrer" className="btn mt-6 w-full bg-whatsapp text-white hover:brightness-95">
+              <FaWhatsapp className="h-5 w-5" /> {business.phone}
             </a>
-            <p className="mt-3 text-stone-600">{business.services}.</p>
-            <a href={`tel:${business.phone}`} className="mt-5 inline-flex items-center gap-2 rounded-full bg-mocha px-5 py-2.5 font-semibold text-white hover:bg-mocha-dark">
-              <LuPhone className="h-4 w-4" /> Call Now
+            <a href={`tel:${business.phone}`} className="mt-4 flex items-center justify-center gap-2 text-sm text-white/75 hover:text-white">
+              <LuPhone className="h-4 w-4" /> Or call {business.phone}
             </a>
           </div>
-          <div className="rounded-2xl bg-white p-8 shadow-sm ring-1 ring-stone-200">
-            <h3 className="font-serif text-xl font-semibold text-mocha-dark">Follow Us {business.social}</h3>
-            <ul className="mt-4 flex flex-wrap gap-3">
-              {business.socialLinks.map(({ label, url, Icon }) => (
-                <li key={label}>
-                  <a href={url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-blush/20 px-4 py-2 text-sm font-medium text-mocha-dark hover:bg-blush/40">
-                    <Icon className="h-4 w-4" /> {label}
-                  </a>
-                </li>
+
+          <div className="rounded-xl bg-white p-8 ring-1 ring-cocoa/10">
+            <h3 className="text-2xl font-semibold">Good to know</h3>
+            <div className="mt-4 divide-y divide-cocoa/10">
+              {faqs.map((f) => (
+                <details key={f.q} className="group py-4">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-semibold">
+                    {f.q}
+                    <LuChevronDown className="h-4 w-4 shrink-0 text-rose transition group-open:rotate-180" />
+                  </summary>
+                  <p className="mt-3 text-sm leading-relaxed text-cocoa-light">{f.a}</p>
+                </details>
               ))}
-            </ul>
+            </div>
           </div>
-        </div>
+        </aside>
       </section>
     </>
   )

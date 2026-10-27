@@ -1,15 +1,17 @@
-import { LuPhone } from 'react-icons/lu'
-import { business } from '../data.js'
+import { FaWhatsapp } from 'react-icons/fa6'
+import { waLink } from '../data.js'
 
 export default function FloatingContact() {
   return (
     <a
-      href={`tel:${business.phone}`}
-      aria-label="Call now"
-      title="Call now"
-      className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-mocha text-white shadow-lg transition hover:scale-110"
+      href={waLink()}
+      target="_blank"
+      rel="noreferrer"
+      aria-label="Chat with us on WhatsApp"
+      title="Chat with us on WhatsApp"
+      className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-whatsapp text-white shadow-lg shadow-black/20 transition hover:scale-105"
     >
-      <LuPhone className="h-6 w-6" />
+      <FaWhatsapp className="h-7 w-7" />
     </a>
   )
 }

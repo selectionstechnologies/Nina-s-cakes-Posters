@@ -1,66 +1,66 @@
 import { Link } from 'react-router-dom'
-import { LuCookie, LuHeart, LuTag, LuTruck } from 'react-icons/lu'
+import { FaWhatsapp } from 'react-icons/fa6'
 import PageHeader from '../components/PageHeader.jsx'
-
-const stats = [
-  { Icon: LuCookie, value: '5', label: 'Flavours' },
-  { Icon: LuTag, value: '$10', label: 'Per Dozen' },
-  { Icon: LuTruck, value: 'Ship', label: 'Deliver & Cater' },
-  { Icon: LuHeart, value: '100%', label: 'Homemade' },
-]
+import { business, images, img, waLink } from '../data.js'
 
 const values = [
-  { title: 'Quality Ingredients', text: 'Free-range eggs, real butter and locally milled flour in everything we bake.' },
-  { title: 'Community First', text: 'We partner with local farms and host monthly community tea mornings.' },
-  { title: 'Made With Love', text: 'Family recipes passed down through generations, baked with care.' },
+  { title: 'Quality First', text: 'We bake with real butter, fresh cream and quality chocolate — no shortcuts.' },
+  { title: 'Personal Service', text: 'You talk directly with the baker, from the first idea to the final detail.' },
+  { title: 'Made with Care', text: 'Each cake is baked, filled and decorated by hand for your celebration.' },
 ]
 
 export default function About() {
   return (
     <>
-      <PageHeader title="Our Story" subtitle="From a small family kitchen to your favourite homemade tea cakes." />
+      <PageHeader
+        eyebrow="Our Story"
+        title="About Nina Cakes"
+        subtitle="A home of handcrafted cakes and desserts, made with care for life's sweetest moments."
+        image={images.heroAbout}
+      />
 
-      <section className="mx-auto grid max-w-6xl items-center gap-12 px-4 py-20 md:grid-cols-2">
+      <section className="container-x grid items-center gap-14 py-24 md:grid-cols-2">
         <img
-          src="https://images.unsplash.com/photo-1517433670267-08bbd4be890f?auto=format&fit=crop&w=1000&q=70"
-          alt="Baker preparing cakes"
-          className="aspect-[4/3] w-full rounded-2xl object-cover shadow-lg"
+          src={img(images.piping, 1000, 1150)}
+          alt="Piping buttercream onto a layered cake"
+          loading="lazy"
+          className="aspect-[6/7] w-full rounded-xl object-cover"
         />
         <div>
-          <h2 className="font-serif text-3xl font-bold text-mocha-dark">Baked with tradition</h2>
-          <p className="mt-4 leading-relaxed text-stone-600">
-            Teacake Chef began with a simple dream: to share our grandmother's beloved cake recipes with the world.
-            What started as weekend bake sales grew into a business baking old-fashioned tea cakes by the dozen.
+          <p className="eyebrow">Baked by Hand</p>
+          <h2 className="mt-3 text-4xl font-semibold leading-tight md:text-5xl">Every cake tells your story</h2>
+          <p className="mt-6 leading-relaxed text-cocoa-light">
+            {business.name} was built on a simple love of baking and of the people we bake for. Birthdays, weddings,
+            baby showers and family gatherings all deserve a cake that feels personal — and that's exactly what we make.
           </p>
-          <p className="mt-4 leading-relaxed text-stone-600">
-            Today we bake classic lemon, almond, pecan, chocolate chip and peanut butter tea cakes — and we cater,
-            deliver and ship them so you can share them with the people you love.
+          <p className="mt-4 leading-relaxed text-cocoa-light">
+            We bake every order fresh from scratch, from rich chocolate fudge cakes and fluffy cupcakes to creamy
+            cheesecakes and dessert cups. Tell us your theme and we'll design something you'll remember.
           </p>
-          <Link to="/menu" className="mt-6 inline-block rounded-full bg-mocha px-6 py-3 font-semibold text-white hover:bg-mocha-dark">Explore Our Menu</Link>
+          <div className="mt-8 flex flex-wrap gap-4">
+            <Link to="/menu" className="btn-dark">Explore the Menu</Link>
+            <a href={waLink()} target="_blank" rel="noreferrer" className="btn-outline">
+              <FaWhatsapp className="h-4 w-4" /> Chat with Us
+            </a>
+          </div>
         </div>
       </section>
 
-      <section className="bg-mocha py-14">
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 text-center md:grid-cols-4">
-          {stats.map((s) => (
-            <div key={s.label}>
-              <s.Icon className="mx-auto mb-2 h-7 w-7 text-blush" />
-              <div className="font-serif text-4xl font-bold text-white">{s.value}</div>
-              <div className="mt-1 text-stone-200">{s.label}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-6xl px-4 py-20">
-        <h2 className="text-center font-serif text-3xl font-bold text-mocha-dark">What We Believe In</h2>
-        <div className="mt-10 grid gap-8 md:grid-cols-3">
-          {values.map((v) => (
-            <div key={v.title} className="rounded-2xl border-t-4 border-blush bg-white p-8 shadow-sm">
-              <h3 className="font-serif text-xl font-semibold text-mocha-dark">{v.title}</h3>
-              <p className="mt-3 text-stone-600">{v.text}</p>
-            </div>
-          ))}
+      <section className="bg-white py-24">
+        <div className="container-x">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="eyebrow">What We Believe</p>
+            <h2 className="mt-3 text-4xl font-semibold md:text-5xl">The Nina Cakes promise</h2>
+          </div>
+          <div className="mt-14 grid gap-px overflow-hidden rounded-xl bg-cocoa/10 md:grid-cols-3">
+            {values.map((v, i) => (
+              <div key={v.title} className="bg-white p-10">
+                <span className="font-serif text-5xl font-semibold text-rose-soft">0{i + 1}</span>
+                <h3 className="mt-4 text-2xl font-semibold">{v.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-cocoa-light">{v.text}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     </>

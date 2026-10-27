@@ -1,57 +1,68 @@
-import { useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
-import { LuChefHat, LuMenu, LuPhone, LuX } from 'react-icons/lu'
-import { business } from '../data.js'
+import { useEffect, useState } from 'react'
+import { NavLink, useLocation } from 'react-router-dom'
+import { LuMenu, LuX } from 'react-icons/lu'
+import { FaWhatsapp } from 'react-icons/fa6'
+import Logo from './Logo.jsx'
+import { waLink } from '../data.js'
 
 const links = [
   { to: '/', label: 'Home' },
   { to: '/menu', label: 'Menu' },
   { to: '/about', label: 'About' },
-  { to: '/contact', label: 'Contact' },
+  { to: '/contact', label: 'Order' },
 ]
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
+  const { pathname } = useLocation()
+  useEffect(() => setOpen(false), [pathname])
+
   const linkClass = ({ isActive }) =>
-    `font-medium transition-colors ${isActive ? 'text-mocha' : 'text-stone-600 hover:text-mocha'}`
+    `text-sm font-semibold uppercase tracking-[0.14em] transition-colors ${isActive ? 'text-rose' : 'text-cocoa hover:text-rose'}`
 
   return (
-    <header className="sticky top-0 z-50 border-b border-stone-200 bg-cream/90 backdrop-blur">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-        <Link to="/" className="flex items-center gap-2 font-serif text-2xl font-bold text-mocha-dark">
-          <LuChefHat aria-hidden className="h-7 w-7" /> {business.name}
-        </Link>
+    <header className="sticky top-0 z-50 border-b border-cocoa/10 bg-cream/95 backdrop-blur">
+      <nav className="container-x flex items-center justify-between py-4">
+        <Logo />
 
-        <ul className="hidden items-center gap-8 md:flex">
+        <ul className="hidden items-center gap-9 md:flex">
           {links.map((l) => (
             <li key={l.to}>
               <NavLink to={l.to} end className={linkClass}>{l.label}</NavLink>
             </li>
           ))}
           <li>
-            <a href={`tel:${business.phone}`} className="inline-flex items-center gap-2 rounded-full bg-mocha px-5 py-2 font-medium text-white hover:bg-mocha-dark">
-              <LuPhone className="h-4 w-4" /> Call Now
+            <a href={waLink()} target="_blank" rel="noreferrer" className="btn-primary !px-5 !py-2.5">
+              <FaWhatsapp className="h-4 w-4" /> Order on WhatsApp
             </a>
           </li>
         </ul>
 
         <button
-          className="rounded p-2 text-mocha-dark md:hidden"
+          className="rounded p-2 text-cocoa md:hidden"
           onClick={() => setOpen(!open)}
           aria-label="Toggle menu"
+          aria-expanded={open}
         >
           {open ? <LuX className="h-6 w-6" /> : <LuMenu className="h-6 w-6" />}
         </button>
       </nav>
 
       {open && (
-        <ul className="flex flex-col gap-4 border-t border-stone-200 px-4 py-4 md:hidden">
-          {links.map((l) => (
-            <li key={l.to}>
-              <NavLink to={l.to} end className={linkClass} onClick={() => setOpen(false)}>{l.label}</NavLink>
+        <div className="border-t border-cocoa/10 md:hidden">
+          <ul className="container-x flex flex-col gap-5 py-6">
+            {links.map((l) => (
+              <li key={l.to}>
+                <NavLink to={l.to} end className={linkClass}>{l.label}</NavLink>
+              </li>
+            ))}
+            <li>
+              <a href={waLink()} target="_blank" rel="noreferrer" className="btn-primary w-full">
+                <FaWhatsapp className="h-4 w-4" /> Order on WhatsApp
+              </a>
             </li>
-          ))}
-        </ul>
+          </ul>
+        </div>
       )}
     </header>
   )
