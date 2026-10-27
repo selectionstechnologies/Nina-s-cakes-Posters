@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { LuPhone } from 'react-icons/lu'
 import { FaWhatsapp } from 'react-icons/fa6'
 import Logo from './Logo.jsx'
-import { business, waLink } from '../data.js'
+import { business, menu, waLink } from '../data.js'
 
 const pages = [
   { to: '/', label: 'Home' },
@@ -13,8 +13,8 @@ const pages = [
 
 export default function Footer() {
   return (
-    <footer className="bg-cocoa text-white/75">
-      <div className="container-x grid gap-12 py-16 md:grid-cols-3">
+    <footer className="bg-chocolate text-white/70">
+      <div className="container-x grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <Logo light />
           <p className="mt-5 max-w-xs text-sm leading-relaxed">
@@ -22,32 +22,40 @@ export default function Footer() {
           </p>
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white">Explore</h4>
+          <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-gold">Explore</h4>
           <ul className="mt-5 space-y-3 text-sm">
             {pages.map((p) => (
-              <li key={p.to}><Link to={p.to} className="hover:text-white">{p.label}</Link></li>
+              <li key={p.to}><Link to={p.to} className="transition hover:text-white">{p.label}</Link></li>
             ))}
           </ul>
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white">Get in Touch</h4>
+          <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-gold">Our Bakes</h4>
+          <ul className="mt-5 space-y-3 text-sm">
+            {menu.map((c) => (
+              <li key={c.category}><Link to="/menu" className="transition hover:text-white">{c.category}</Link></li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-gold">Get in Touch</h4>
           <ul className="mt-5 space-y-3 text-sm">
             <li>
-              <a href={waLink()} target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 hover:text-white">
-                <FaWhatsapp className="h-4 w-4 text-whatsapp" /> WhatsApp {business.phone}
+              <a href={waLink()} target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 transition hover:text-white">
+                <FaWhatsapp className="h-4 w-4 text-whatsapp" /> {business.phone}
               </a>
             </li>
             <li>
-              <a href={`tel:${business.phone}`} className="inline-flex items-center gap-3 hover:text-white">
-                <LuPhone className="h-4 w-4" /> Call {business.phone}
+              <a href={`tel:${business.phone}`} className="inline-flex items-center gap-3 transition hover:text-white">
+                <LuPhone className="h-4 w-4" /> Call us
               </a>
             </li>
           </ul>
-          <p className="mt-5 text-xs leading-relaxed text-white/55">All orders are made to order. Please let us know about any allergies when ordering.</p>
+          <p className="mt-5 text-xs leading-relaxed text-white/50">All items are made to order. Please tell us about any allergies when ordering.</p>
         </div>
       </div>
       <div className="border-t border-white/10">
-        <p className="container-x py-5 text-xs text-white/55">© {new Date().getFullYear()} {business.name}. All rights reserved.</p>
+        <p className="container-x py-5 text-xs text-white/50">© {new Date().getFullYear()} {business.name}. All rights reserved.</p>
       </div>
     </footer>
   )

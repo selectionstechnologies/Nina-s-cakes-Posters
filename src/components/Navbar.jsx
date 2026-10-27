@@ -14,14 +14,23 @@ const links = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const { pathname } = useLocation()
   useEffect(() => setOpen(false), [pathname])
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   const linkClass = ({ isActive }) =>
-    `text-sm font-semibold uppercase tracking-[0.14em] transition-colors ${isActive ? 'text-rose' : 'text-cocoa hover:text-rose'}`
+    `relative py-1 text-sm font-bold uppercase tracking-[0.14em] transition-colors after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:bg-berry after:transition-transform after:duration-300 ${
+      isActive ? 'text-berry after:scale-x-100' : 'text-chocolate after:scale-x-0 hover:text-berry hover:after:scale-x-100'
+    }`
 
   return (
-    <header className="sticky top-0 z-50 border-b border-cocoa/10 bg-cream/95 backdrop-blur">
+    <header className={`sticky top-0 z-50 border-b bg-cream/95 backdrop-blur transition-shadow duration-300 ${scrolled ? 'border-transparent shadow-lg shadow-chocolate/5' : 'border-chocolate/10'}`}>
       <nav className="container-x flex items-center justify-between py-4">
         <Logo />
 
@@ -39,7 +48,7 @@ export default function Navbar() {
         </ul>
 
         <button
-          className="rounded p-2 text-cocoa md:hidden"
+          className="rounded p-2 text-chocolate md:hidden"
           onClick={() => setOpen(!open)}
           aria-label="Toggle menu"
           aria-expanded={open}
@@ -48,8 +57,8 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {open && (
-        <div className="border-t border-cocoa/10 md:hidden">
+      <div className={`grid border-t border-chocolate/10 transition-[grid-template-rows] duration-300 md:hidden ${open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr] border-transparent'}`}>
+        <div className="overflow-hidden">
           <ul className="container-x flex flex-col gap-5 py-6">
             {links.map((l) => (
               <li key={l.to}>
@@ -63,7 +72,7 @@ export default function Navbar() {
             </li>
           </ul>
         </div>
-      )}
+      </div>
     </header>
   )
 }
