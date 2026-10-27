@@ -3,25 +3,45 @@
 @theme {
   --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Cormorant Garamond", ui-serif, Georgia, serif;
-  --color-cream: #faf6f1;
-  --color-sand: #f1e8de;
-  --color-cocoa: #3d2a22;
-  --color-cocoa-light: #6b5248;
-  --color-rose: #b86f62;
-  --color-rose-dark: #9a5649;
-  --color-rose-soft: #f3dfd8;
-  --color-gold: #b8925a;
+  --color-cream: #fffaf6;
+  --color-blush: #fbeeea;
+  --color-chocolate: #2e1a16;
+  --color-chocolate-light: #6e5650;
+  --color-berry: #b0325a;
+  --color-berry-dark: #8d2346;
+  --color-berry-soft: #f7dbe2;
+  --color-gold: #c19a5b;
+  --color-gold-dark: #9a7638;
   --color-whatsapp: #25d366;
+
+  --animate-kenburns: kenburns 14s ease-out both;
+  --animate-fade-up: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-blink: blink 1s step-end infinite;
+  --animate-ping-slow: ping-slow 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+
+  @keyframes kenburns { from { transform: scale(1.12); } to { transform: scale(1); } }
+  @keyframes fade-up { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+  @keyframes blink { 50% { opacity: 0; } }
+  @keyframes ping-slow { 75%, 100% { transform: scale(1.6); opacity: 0; } }
 }
 
 html { scroll-behavior: smooth; }
-body { @apply bg-cream text-cocoa font-sans antialiased; }
+body { @apply bg-cream text-chocolate font-sans antialiased; }
 h1, h2, h3 { @apply font-serif; }
 
 @utility container-x { @apply mx-auto w-full max-w-6xl px-5 md:px-8; }
-@utility eyebrow { @apply text-xs font-semibold uppercase tracking-[0.22em] text-rose; }
-@utility btn { @apply inline-flex items-center justify-center gap-2 rounded-full px-7 py-3 text-sm font-semibold tracking-wide transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose; }
-@utility btn-primary { @apply btn bg-rose text-white hover:bg-rose-dark; }
-@utility btn-dark { @apply btn bg-cocoa text-white hover:bg-cocoa-light; }
-@utility btn-outline-light { @apply btn border border-white/70 text-white hover:bg-white hover:text-cocoa; }
-@utility btn-outline { @apply btn border border-cocoa/25 text-cocoa hover:border-cocoa hover:bg-cocoa hover:text-white; }
+@utility eyebrow { @apply text-xs font-bold uppercase tracking-[0.24em] text-berry; }
+@utility btn { @apply inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold tracking-wide transition duration-300 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-berry; }
+@utility btn-primary { @apply btn bg-berry text-white shadow-lg shadow-berry/25 hover:bg-berry-dark; }
+@utility btn-dark { @apply btn bg-chocolate text-white hover:bg-chocolate-light; }
+@utility btn-outline-light { @apply btn border border-white/70 text-white backdrop-blur-sm hover:bg-white hover:text-chocolate; }
+@utility btn-outline { @apply btn border border-chocolate/20 text-chocolate hover:border-chocolate hover:bg-chocolate hover:text-white; }
+
+/* Scroll reveal */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1); transition-delay: var(--delay, 0ms); }
+.reveal.is-visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  .reveal { opacity: 1; transform: none; }
+}
