@@ -23,7 +23,7 @@ export default function Home() {
         <HeroSlider slides={heroSlides} />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-chocolate/95 via-chocolate/70 to-chocolate/10" />
         <div className="absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-chocolate/60 to-transparent" />
-        <div className="container-x flex min-h-[640px] flex-col justify-center py-28 md:min-h-[86vh]">
+        <div className="container-x flex min-h-[640px] flex-col justify-center py-28 md:min-h-[min(86vh,860px)]">
           <p className="eyebrow animate-fade-up !text-berry-soft">Handcrafted Cakes &amp; Desserts</p>
           <h1 className="mt-5 max-w-3xl animate-fade-up text-[2.75rem] font-semibold leading-[1.02] text-white [animation-delay:120ms] sm:text-6xl md:text-7xl">
             Beautiful cakes for
@@ -49,11 +49,11 @@ export default function Home() {
 
       {/* Promises */}
       <section className="relative z-10 -mt-px bg-white">
-        <div className="container-x grid gap-px overflow-hidden py-0 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="container-x grid grid-cols-2 gap-x-5 py-6 lg:grid-cols-4 lg:py-0">
           {promises.map((p, i) => {
             const Icon = promiseIcons[i]
             return (
-              <Reveal key={p.title} delay={i * 100} className="group px-2 py-10 sm:px-6">
+              <Reveal key={p.title} delay={i * 100} className="group py-5 lg:px-6 lg:py-10">
                 <Icon className="h-9 w-9 text-berry transition duration-500 group-hover:-translate-y-1 group-hover:text-gold" strokeWidth={1.4} />
                 <h3 className="mt-4 text-2xl font-semibold">{p.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-chocolate-light">{p.text}</p>
