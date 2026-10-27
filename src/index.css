@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
+  --color-cream: #fdf8f2;
+  --color-mocha: #6b4226;
+  --color-mocha-dark: #4a2c18;
+  --color-blush: #e8a598;
+  --color-sage: #8a9a5b;
+}
+
+html { scroll-behavior: smooth; }
+body { @apply bg-cream text-stone-800 font-sans antialiased; }
